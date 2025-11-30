@@ -52,25 +52,54 @@ const Home = () => {
           </header>
 
           {/* Gráfico */}
-          <div className="bg-chart-background rounded-3xl p-6 mx-4 mt-6">
-            <div className="flex justify-between items-end gap-3 h-48">
+          <div className="bg-card rounded-3xl p-6 mx-4 mt-6 shadow-lg border border-border">
+            <h2 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+              Gastos Semanais
+            </h2>
+            <div className="flex justify-between items-end gap-2 h-56 relative">
+              {/* Linhas de referência */}
+              <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                <div className="border-t border-border/50" />
+                <div className="border-t border-border/50" />
+                <div className="border-t border-border/50" />
+                <div className="border-t border-border/50" />
+              </div>
+              
               {chartData.map((item, index) => {
                 const heightPercentage = item.value > 0 ? (item.value / maxValue) * 100 : 0;
+                const minHeight = 8; // altura mínima em %
+                const finalHeight = item.value > 0 ? Math.max(heightPercentage, minHeight) : minHeight;
                 
                 return (
-                  <div key={index} className="flex-1 flex flex-col items-center gap-3">
-                    <span className="text-sm font-medium text-foreground">
-                      {item.value.toFixed(1)}
-                    </span>
-                    <div className="w-full flex-1 flex items-end">
+                  <div key={index} className="flex-1 flex flex-col items-center gap-2 relative z-10">
+                    {/* Valor */}
+                    <div className="h-8 flex items-center">
+                      {item.value > 0 && (
+                        <span className="text-xs font-bold text-primary animate-fade-in">
+                          R${item.value.toFixed(0)}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Coluna */}
+                    <div className="w-full flex-1 flex items-end justify-center">
                       <div
-                        className={`w-full rounded-full transition-all duration-300 ${
-                          item.value > 0 ? "bg-[#2A936E]" : "bg-chart-bar"
+                        className={`w-full max-w-[36px] rounded-t-lg transition-all duration-500 ease-out shadow-md ${
+                          item.value > 0 
+                            ? "bg-gradient-to-t from-primary to-primary/80 hover:scale-105" 
+                            : "bg-muted/50"
                         }`}
-                        style={{ height: item.value > 0 ? `${heightPercentage}%` : "20%" }}
+                        style={{ 
+                          height: `${finalHeight}%`,
+                          minHeight: '16px'
+                        }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-foreground">{item.day}</span>
+                    
+                    {/* Dia */}
+                    <span className="text-sm font-semibold text-foreground mt-1">
+                      {item.day}
+                    </span>
                   </div>
                 );
               })}
