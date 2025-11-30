@@ -25,9 +25,17 @@ const Configuracao = () => {
               <p className="text-lg text-gray-700 mb-2">
                 Desenvolvido por
               </p>
-              <p className="text-2xl font-bold text-[#2A936E]">
-                Brian Friedrich
-              </p>
+              <div className="space-y-1">
+                <p className="text-2xl font-bold text-[#2A936E]">
+                  Brian Friedrich
+                </p>
+                <p className="text-2xl font-bold text-[#2A936E]">
+                  Jean Alves
+                </p>
+                <p className="text-2xl font-bold text-[#2A936E]">
+                  Antonio Palma
+                </p>
+              </div>
             </div>
             
             <div className="border-t border-gray-200 pt-6">
