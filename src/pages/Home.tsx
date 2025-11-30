@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Plus, Trash2 } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import { useExpenses } from "@/contexts/ExpenseContext";
 import { Drawer } from "@/components/Drawer";
 import { PremiumModal } from "@/components/PremiumModal";
+import { ExpenseItem } from "@/components/ExpenseItem";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -31,11 +32,6 @@ const Home = () => {
   const chartData = weeklyData();
   const maxValue = Math.max(...chartData.map((d) => d.value), 1);
   const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
-  };
 
   return (
     <>
@@ -94,31 +90,25 @@ const Home = () => {
           <div className="flex-1 overflow-auto px-4 py-4">
             {expenses.length === 0 ? (
               <div className="flex items-center justify-center h-full">
-                <p className="text-center text-muted-foreground text-lg">
-                  Nenhuma Despesa Cadastrada!
-                </p>
+                <div className="text-center space-y-2">
+                  <p className="text-muted-foreground text-lg">
+                    Nenhuma Despesa Cadastrada!
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    Comece adicionando sua primeira despesa
+                  </p>
+                </div>
               </div>
             ) : (
               <div className="space-y-3">
                 {expenses.map((expense) => (
-                  <div
+                  <ExpenseItem
                     key={expense.id}
-                    className="bg-white rounded-2xl p-4 shadow-sm flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold text-gray-800">{expense.name}</p>
-                      <p className="text-sm text-gray-500">{formatDate(expense.date)}</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <p className="font-bold text-gray-800">R${expense.amount.toFixed(2)}</p>
-                      <button
-                        onClick={() => deleteExpense(expense.id)}
-                        className="text-red-500 hover:text-red-600 transition-colors"
-                      >
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
-                  </div>
+                    name={expense.name}
+                    amount={expense.amount}
+                    date={expense.date}
+                    onDelete={() => deleteExpense(expense.id)}
+                  />
                 ))}
               </div>
             )}
@@ -128,7 +118,7 @@ const Home = () => {
           <div className="p-6 pb-8">
             <button
               onClick={() => navigate("/nova-despesa")}
-              className="w-full bg-[#2A936E] hover:bg-[#238360] text-white rounded-full py-4 text-lg font-medium shadow-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-4 text-lg font-medium shadow-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus size={24} />
               Adicionar
