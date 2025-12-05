@@ -1,2 +1,0 @@
-SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-SONAR_HOST_URL: https://expense-pixel-perfect.lovable.app
